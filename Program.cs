@@ -20,6 +20,12 @@ namespace ltk_cs
                 Console.WriteLine("SDL_CreateWindow fail");
                 return;
             }
+            var img_flags = SDL_image.IMG_InitFlags.IMG_INIT_PNG;
+            if (SDL_image.IMG_Init(img_flags) != (int)img_flags)
+            {
+                Console.WriteLine("IMG_Init fail");
+                return;
+            }
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadLine();
