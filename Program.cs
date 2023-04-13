@@ -26,9 +26,61 @@ namespace ltk_cs
                 Console.WriteLine("IMG_Init fail");
                 return;
             }
+            var surface = SDL.SDL_GetWindowSurface(wnd);
+            var img = SDL_image.IMG_Load("1.png");
+            if (img == IntPtr.Zero)
+            {
+                Console.WriteLine("IMG_Load fail");
+                return;
+            }
+            SDL.SDL_BlitSurface(img, IntPtr.Zero, surface, IntPtr.Zero);
+            SDL.SDL_UpdateWindowSurface(wnd);
+
+            bool quit = false;
+            SDL.SDL_Event e;
+
+            while (!quit)
+            {
+                while (SDL.SDL_PollEvent(out e) != 0)
+                {
+                    if (e.type == SDL.SDL_EventType.SDL_QUIT)
+                    {
+                        quit = true;
+                        break;
+                    }
+                    else if (e.type == SDL.SDL_EventType.SDL_KEYDOWN)
+                    {
+                        ProcessKey(e.key.keysym.sym);
+                    }
+                }
+            }
+            SDL.SDL_FreeSurface(img);
+            SDL.SDL_DestroyWindow(wnd);
+
+            SDL_image.IMG_Quit();
+            SDL.SDL_Quit();
+
 
             Console.WriteLine("Press any key to exit...");
-            Console.ReadLine();
+        }
+
+        static void ProcessKey(SDL.SDL_Keycode code)
+        {
+            switch(code)
+            {
+                case SDL.SDL_Keycode.SDLK_w:
+                    Console.WriteLine("Key W");
+                    break;
+                case SDL.SDL_Keycode.SDLK_a:
+                    Console.WriteLine("Key A");
+                    break;
+                case SDL.SDL_Keycode.SDLK_s:
+                    Console.WriteLine("Key S");
+                    break;
+                case SDL.SDL_Keycode.SDLK_d:
+                    Console.WriteLine("Key D");
+                    break;
+            }
         }
     }
 }
